@@ -1,0 +1,2 @@
+Oja's rule
+http://www.scholarpedia.org/article/Oja_learning_rule
