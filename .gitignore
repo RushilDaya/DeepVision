@@ -1,3 +1,7 @@
+data/test/
+data/training/
+data/validation/
+
 VOCtrainval_11-May-2009.tar
 VOCdevkit/
 

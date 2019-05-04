@@ -3,6 +3,7 @@
 import os, sys
 import numpy as np 
 import matplotlib.pyplot as plt
+import shutil
 from lxml import etree
 from skimage import io
 from skimage.transform import resize
@@ -67,9 +68,9 @@ trainingSize = int(trainingSplit*numImages)
 validationSize = int(validationSplit*numImages)
 testSize = int(testSplit*numImages)
 
-trainingLabels = labelsOnly[:trainingSize]
-validationLabels = labelsOnly[trainingSize:validationSize+trainingSize]
-testLabels = labelsOnly[validationSize+trainingSize:validationSize+trainingSize+testSize]
+trainingLabels = filteredLabels[:trainingSize]
+validationLabels = filteredLabels[trainingSize:validationSize+trainingSize]
+testLabels = filteredLabels[validationSize+trainingSize:validationSize+trainingSize+testSize]
 
 print('classes ',imageClasses)
 confMatrix = confusionMatrix(trainingLabels,imageClasses,plot=True,figname='Training')
@@ -88,4 +89,21 @@ if not response =='y':
     print('Not continuing with data generation...')
     sys.exit()
 
-#========= generate pickles ====================================
+#========= generate images ====================================
+def copyAndResizeImages(labels,writePath,readPath,imgSize):
+    if os.path.isdir(writePath):
+        shutil.rmtree(writePath)
+        os.mkdir(writePath)
+    else:
+        os.mkdir(writePath)
+
+    for item in labels:
+        image = io.imread(readPath+item[0]+'.jpg')
+        resized = (255*resize(image, (imgSize,imgSize,3))).astype('uint8')
+        io.imsave(writePath+item[0]+'.jpg', resized)
+
+
+copyAndResizeImages(trainingLabels,'../data/training/',rawDataPath+'JPEGImages/',imageSize)
+copyAndResizeImages(validationLabels,'../data/validation/',rawDataPath+'JPEGImages/',imageSize)
+copyAndResizeImages(testLabels,'../data/test/',rawDataPath+'JPEGImages/',imageSize)
+
