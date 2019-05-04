@@ -114,6 +114,7 @@ splitLabels = {
     'training':trainingLabels,
     'test':testLabels,
     'validation':validationLabels
+    'classes':imageClasses
 }
 
 with open('../data/labels.pickle', 'wb' ) as f:
