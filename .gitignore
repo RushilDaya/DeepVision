@@ -2,6 +2,7 @@ data/test/
 data/training/
 data/validation/
 data/labels.pickle
+data/summary.txt
 
 VOCtrainval_11-May-2009.tar
 VOCdevkit/

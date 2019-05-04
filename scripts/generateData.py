@@ -113,9 +113,16 @@ copyAndResizeImages(testLabels,'../data/test/',rawDataPath+'JPEGImages/',imageSi
 splitLabels = {
     'training':trainingLabels,
     'test':testLabels,
-    'validation':validationLabels
+    'validation':validationLabels,
     'classes':imageClasses
 }
 
 with open('../data/labels.pickle', 'wb' ) as f:
     pickle.dump(splitLabels, f)
+
+#============== summarise the information for reproduction===============================
+with open("../data/summary.txt","w") as f:
+    f.write('classes: '+str(imageClasses).strip('[]') +'\n')
+    f.write('imageSize: '+str(imageSize)+'\n')
+    f.write('train-valid-test: '+str(trainingSplit)+'-'+str(validationSplit)+'-'+str(testSplit) + '\n')
+    f.write('numImages:'+str(numImages)+'\n') 
