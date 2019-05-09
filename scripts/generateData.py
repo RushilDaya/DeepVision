@@ -4,7 +4,6 @@ import os, sys, pickle
 import numpy as np 
 import matplotlib.pyplot as plt
 import shutil
-from lxml import etree
 from skimage import io
 from skimage.transform import resize
 from  shared.confReader import confReader
