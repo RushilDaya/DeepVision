@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from math import ceil
 from random import randint
 import os
-from helper_models.autoencoder import read_n_images, generate_img_from_folder, get_input_shape, get_num_examples, plot_history, get_images, bgr2rgb, plot_reconstruction
+from shared.autoencoderHelpers import read_n_images, generate_img_from_folder, get_input_shape, get_num_examples, plot_history, get_images, bgr2rgb, plot_reconstruction
 
 
 
@@ -163,7 +163,7 @@ def AEtrain(autoencoder, batchsize=32, epochs=1):
 
 
 def AEsave(configName, nnModel, history):
-    saveLoc = './autoencoderTemps/'+configName+'/'
+    saveLoc = '../models/autoencoder/'+configName+'/'
     if not os.path.isdir(saveLoc):
         os.mkdir(saveLoc)
 

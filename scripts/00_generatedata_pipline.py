@@ -1,3 +1,10 @@
+'''
+    Script generates data in accordance to the configurations in ../configVars.yml
+    Distribution plots are generated before the data is overwritten
+
+    Script outputs data to ../data/* namely test, training, validation folders as well as a summary file and a labels object
+'''
+
 # splits and preprocesses data according to set configurations
 
 import os, sys, pickle

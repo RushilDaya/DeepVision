@@ -1,12 +1,12 @@
 import sys
 import yaml
-from helper_models.autoencoderTopLevels import AEsetup, AEtrain, AEsave
+from shared.autoencoderFunctions import AEsetup, AEtrain, AEsave
 
 if len(sys.argv) < 1:
     print('Please Name a configuration to run ie config1')
     sys.exit()
 
-configFile = 'autoencoderConfigs.yml'
+configFile = '../configAutoencoders.yml'
 configName = sys.argv[1]
 
 with open(configFile, 'r') as stream:
