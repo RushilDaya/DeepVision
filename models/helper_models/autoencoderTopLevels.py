@@ -54,11 +54,88 @@ def AEsetup(networkArch='normal', optimizer='adam'):
 
         # create the decoder model
         decoder = Model(input_enc, deco)
-        autoencoder.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['mean_squared_error'])
+
+    if networkArch == 'dayaNet':
+        # deeper than the normal case with a much tighter bottleneck (code space of 5 by 5 by 4)
+        # expect worse performance than normal but with a much smaller code :)
+
+        x = Conv2D(16,(3,3),activation='relu',padding='same', name='enc_conv1')(input_img)
+        x = MaxPooling2D((2,2),padding='same', name='enc_max_pool1')(x)
+        x = Conv2D(16,(3,3),activation='relu',padding='same', name='enc_conv2')(x)
+        x = MaxPooling2D((5,5), padding='same', name='enc_max_pool2')(x)
+        x = Conv2D(8,(3,3),activation='relu',padding='same', name='enc_conv3')(x)
+        x = Conv2D(4,(3,3),activation='relu',padding='same', name='enc_conv4')(x)
+        encoded = MaxPooling2D((4,4),padding='same', name='enc_max_pool3')(x)
+
+
+        x = UpSampling2D((4,4), name='dec_up_samp1')(encoded)
+        x = Conv2D(8,(3,3),activation='relu', padding='same', name='dec_conv1')(x)
+        x = Conv2D(16,(3,3),activation='relu', padding='same', name='dec_conv2')(x)
+        x = UpSampling2D((5,5),name='dec_up_samp2')(x)
+        x = Conv2D(16,(3,3),activation='relu',padding='same',name='dec_conv3')(x)
+        x = UpSampling2D((2,2),name='dec_up_samp3')(x)
+        decoded = Conv2D(3,(3,3),activation='sigmoid', padding='same', name='dec_conv4')(x)
+
+
+         # Generate models
+        autoencoder = Model(input_img, decoded)
+        # this model maps an input to its encoded representation
+        encoder = Model(input_img, encoded)   
+        # create a placeholder for an encoded (32-dimensional) input
+        encoding_dim = autoencoder.get_layer('enc_max_pool3').output_shape[1:]
+
+        input_dec = Input(shape=encoding_dim, name='dec_in')
+        deco = autoencoder.layers[-7](input_dec)
+        deco = autoencoder.layers[-6](deco)
+        deco = autoencoder.layers[-5](deco)
+        deco = autoencoder.layers[-4](deco)
+        deco = autoencoder.layers[-3](deco)
+        deco = autoencoder.layers[-2](deco)
+        deco = autoencoder.layers[-1](deco)
+
+        # create the decoder model
+        decoder = Model(input_dec, deco)
+    
+    if networkArch == 'leCunhaNet':
+        # network has a larger coding space than the normal network 
+        # should perform better in terms of reconstruction accuracy though
+
+        x = Conv2D(16,(3,3),activation='relu',padding='same', name='enc_conv1')(input_img)
+        x = Conv2D(16,(3,3),activation='relu',padding='same', name='enc_conv2')(x)
+        x = MaxPooling2D((4,4), padding='same', name='enc_max_pool1')(x)
+        x = Conv2D(16,(3,3),activation='relu',padding='same', name='enc_conv3')(x)
+        encoded = MaxPooling2D((2,2),padding='same', name='enc_max_pool2')(x)
+
+
+        x = UpSampling2D((2,2), name='dec_up_samp1')(encoded)
+        x = Conv2D(16,(3,3),activation='relu', padding='same', name='dec_conv1')(x)
+        x = UpSampling2D((4,4),name='dec_up_samp2')(x)
+        x = Conv2D(16,(3,3),activation='relu',padding='same',name='dec_conv2')(x)
+        decoded = Conv2D(3,(3,3),activation='sigmoid', padding='same', name='dec_conv3')(x)
+
+
+         # Generate models
+        autoencoder = Model(input_img, decoded)
+        # this model maps an input to its encoded representation
+        encoder = Model(input_img, encoded)
+        # create a placeholder for an encoded (32-dimensional) input
+        encoding_dim = autoencoder.get_layer('enc_max_pool2').output_shape[1:]
+
+        input_dec = Input(shape=encoding_dim, name='dec_in')
+        deco = autoencoder.layers[-5](input_dec)
+        deco = autoencoder.layers[-4](deco)
+        deco = autoencoder.layers[-3](deco)
+        deco = autoencoder.layers[-2](deco)
+        deco = autoencoder.layers[-1](deco)
+
+        # create the decoder model
+        decoder = Model(input_dec, deco)
+
     else:
         raise TypeError('architecture not implemented')
 
 
+    autoencoder.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['mean_squared_error'])
     encoder.summary()
     decoder.summary()
     autoencoder.summary()
