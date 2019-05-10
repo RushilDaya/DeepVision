@@ -21,7 +21,7 @@ with open(configFile, 'r') as stream:
         sys.exit()
 
 
-(model, encoderPart, decoderPart) = ae.buildModel(configuration['network'],configuration['optimizer'])
+(model, encoderPart, decoderPart) = ae.buildModel(configuration['network'],configuration['optimizer'],datapath=datapath)
 (model, history) = ae.trainModel(model, configuration['batchSize'],configuration['epochs'], datapath=datapath)
 ae.saveModel(configName, model, history, savepath=savepath)
 
