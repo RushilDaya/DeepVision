@@ -33,4 +33,3 @@ config6:
   batchSize: 8
   epochs: 30
   network: 'leCunhaNet'
-

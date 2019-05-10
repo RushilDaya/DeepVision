@@ -1,12 +1,15 @@
 import sys
 import yaml
-from shared.autoencoderFunctions import AEsetup, AEtrain, AEsave
+import shared.autoencoderFunctions as ae
 
 if len(sys.argv) < 1:
-    print('Please Name a configuration to run ie config1')
+    print('Please Name a configuration to run ie config1: configurations are defined in deepVision/configAutoencoders.yml')
     sys.exit()
 
 configFile = '../configAutoencoders.yml'
+datapath = '../data'
+savepath = '../models/autoencoder'
+
 configName = sys.argv[1]
 
 with open(configFile, 'r') as stream:
@@ -17,8 +20,9 @@ with open(configFile, 'r') as stream:
         print('an error occurred in loading the configuration')
         sys.exit()
 
-(model,encoderPart,decoderPart)=AEsetup(configuration['network'],configuration['optimizer'])
-(model,history)=AEtrain(model, configuration['batchSize'],configuration['epochs'])
-AEsave(configName,model,history)
+
+(model, encoderPart, decoderPart) = ae.buildModel(configuration['network'],configuration['optimizer'])
+(model, history) = ae.trainModel(model, configuration['batchSize'],configuration['epochs'], datapath=datapath)
+ae.saveModel(configName, model, history, savepath=savepath)
 
 

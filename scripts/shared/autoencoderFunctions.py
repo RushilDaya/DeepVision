@@ -13,7 +13,7 @@ from shared.autoencoderHelpers import read_n_images, generate_img_from_folder, g
 
 
 
-def AEsetup(networkArch='normal', optimizer='adam'):
+def buildModel(networkArch='normal', optimizer='adam'):
     DATA_DIR = '../data'
     in_shape = get_input_shape(DATA_DIR, 'training')
     input_img = Input(shape=in_shape, name='input_layer')
@@ -141,7 +141,7 @@ def AEsetup(networkArch='normal', optimizer='adam'):
     autoencoder.summary()
     return autoencoder,encoded,decoded
 
-def AEtrain(autoencoder, batchsize=32, epochs=1):
+def trainModel(autoencoder, batchsize=32, epochs=1, datapath=''):
     
     DATA_DIR = '../data'
     EPOCHS = epochs
@@ -162,8 +162,8 @@ def AEtrain(autoencoder, batchsize=32, epochs=1):
     return autoencoder,history
 
 
-def AEsave(configName, nnModel, history):
-    saveLoc = '../models/autoencoder/'+configName+'/'
+def saveModel(configName, nnModel, history, savepath=''):
+    saveLoc = savepath+'/'+configName+'/'
     if not os.path.isdir(saveLoc):
         os.mkdir(saveLoc)
 
