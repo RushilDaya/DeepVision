@@ -1,0 +1,35 @@
+config1:
+  optimizer: 'adam'
+  batchSize: 32
+  epochs: 30
+  network: 'normal'
+
+config2:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  network: 'normal'
+
+config3:
+  optimizer: 'adadelta'
+  batchSize: 32
+  epochs: 100
+  network: 'normal'
+
+config4:
+  optimizer: 'adadelta'
+  batchSize: 8
+  epochs: 30
+  network: 'normal'
+
+config5:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  network: 'dayaNet'
+
+config6:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  network: 'leCunhaNet'
