@@ -1,3 +1,5 @@
+import os, shutil
+
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '*'):
     """
     Call in a loop to create terminal progress bar
@@ -17,3 +19,19 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     # Print New Line on Complete
     if iteration == total: 
         print()
+
+def createUpdateDirectories(directoryArray, reset=False):
+    """
+    creates directories if they dont exist
+    if they do exist and reset is False nothing happens
+    if they do exist and reset is True the directory is cleared and reset
+    """
+    for directory in directoryArray:
+        if os.path.isdir(directory):
+            if reset:
+                shutil.rmtree(directory)
+                os.mkdir(directory)
+        else:
+            os.mkdir(directory)
+    
+    return True

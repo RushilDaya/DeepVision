@@ -10,3 +10,5 @@ NUM_IMAGES: -1 # an upper bound on how many images to extract in total (-1 indic
 TRAINING_RATIO: 0.6
 VALIDATION_RATIO: 0.2
 TEST_RATIO: 0.2
+
+SEGMENTATION_DATA_TYPE: 'foregroundBackground' # options: [foregroundBackground, ...]
