@@ -6,8 +6,6 @@ import tensorflow as tf
 import numpy as np
 import os
 
-from shared.autoencoderArchitectures import getNormal, getDayaNet, getLeCunhaNet
-
 def getNormal(inputShape):
     """
     the normal network codes from 200*200*3 to a 25*25*8 code

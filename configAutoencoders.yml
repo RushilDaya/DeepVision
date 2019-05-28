@@ -33,3 +33,15 @@ config6:
   batchSize: 8
   epochs: 30
   network: 'leCunhaNet'
+
+twoClassTest:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  network: 'normal'
+
+twoClassTestUntrained:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 0
+  network: 'normal'
