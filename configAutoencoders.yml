@@ -40,8 +40,15 @@ twoClassTest:
   epochs: 30
   network: 'normal'
 
-twoClassTestUntrained:
+twoClassSmall:
   optimizer: 'adam'
   batchSize: 8
-  epochs: 0
-  network: 'normal'
+  epochs: 30
+  network: 'dayaNet'
+
+twoClassLarge:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  network: 'leCunhaNet'
+
