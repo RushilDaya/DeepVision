@@ -3,6 +3,7 @@
 data/test/
 data/training/
 data/validation/
+data/segmentation/
 data/labels.pickle
 data/summary.txt
 
