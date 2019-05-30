@@ -1,0 +1,8 @@
+config1:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 5
+  autoencoderArch: 'normal'
+  autoencoderModel: 'twoClassTest'
+  classifierModel: 'simple'
+  
