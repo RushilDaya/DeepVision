@@ -13,3 +13,11 @@ config2:
   autoencoderArch: 'normal'
   autoencoderModel: 'twoClassTest'
   classifierModel: 'fullyConnected1'
+
+config3:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  autoencoderArch: 'normal'
+  autoencoderModel: 'twoClassTest'
+  classifierModel: 'fullyConnected2'
