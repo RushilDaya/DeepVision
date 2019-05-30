@@ -11,6 +11,7 @@ if len(sys.argv) < 1:
 
 configFile = '../configClassifiers.yml'
 datapath = '../data'
+modelpath = '../models'
 savepath = '../models/classifiers'
 
 configName = sys.argv[1]
@@ -31,6 +32,6 @@ AUTOENCODER_ARCHITECTURE = configuration['autoencoderArch']
 AUTOENCODER_MODEL = configuration['autoencoderModel']
 CLASSIFIER_MODEL = configuration['classifierModel']
 
-(frozenModel, meltedModel ,untrainedModel) = clf.buildModels(AUTOENCODER_ARCHITECTURE, AUTOENCODER_MODEL,CLASSIFIER_MODEL, OPTIMIZER, datapath=datapath)
+(frozenModel, meltedModel ,untrainedModel) = clf.buildModels(AUTOENCODER_ARCHITECTURE, AUTOENCODER_MODEL,CLASSIFIER_MODEL, OPTIMIZER, datapath=datapath, modelpath=modelpath)
 (frozenModel_OBJ, meltedModel_OBJ,untrainedModel_OBJ) = clf.trainModels(frozenModel,meltedModel,untrainedModel, BATCH_SIZE, EPOCHS, datapath=datapath)
 clf.saveModels(configName, frozenModel_OBJ, meltedModel_OBJ ,untrainedModel_OBJ, savepath=savepath )
