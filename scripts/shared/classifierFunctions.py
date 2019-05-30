@@ -1,21 +1,25 @@
 # the top level functions for classification
 from shared.autoencoderHelpers import read_n_images, generate_img_from_folder, get_input_shape, get_num_examples, plot_history, get_images, bgr2rgb, plot_reconstruction
-from shared.classifierHelpers import getUntrained, getFrozen, getMelted, getLabelShape, autoencoderToClassifier
+from shared.classifierHelpers import getUntrained, getFrozen, getMelted, get_num_classes, autoencoderToClassifier
 from shared.autoencoderArchitectures import getCodeLabel
 
 def buildModels(aeArch, aeModel, clfModel, optimizer, datapath='', modelpath=''):
 
 
     inputShape = get_input_shape(datapath,'training')
-    untrainedAutoencoder = getUntrained(aeArch)
+    (untrainedAutoencoder,_,_) = getUntrained(aeArch, inputShape)
     frozenAutoencoder = getFrozen(aeModel, modelpath)
     meltedAutoencoder = getMelted(aeModel, modelpath)
 
     codeLabel = getCodeLabel(aeArch)
-    outputShape = getLabelShape(datapath)
+    outputShape = get_num_classes(datapath)
     frozenModel = autoencoderToClassifier(frozenAutoencoder,clfModel,codeLabel,outputShape)
     meltedModel = autoencoderToClassifier(meltedAutoencoder,clfModel,codeLabel,outputShape)
     untrainedModel = autoencoderToClassifier(untrainedAutoencoder,clfModel,codeLabel,outputShape)
+
+    frozenModel.compile(optimizer=optimizer, loss='categorical_crossentropy',metrics=['accuracy'])
+    meltedModel.compile(optimizer=optimizer, loss='categorical_crossentropy',metrics=['accuracy'])
+    untrainedModel.compile(optimizer=optimizer, loss='categorical_crossentropy',metrics=['accuracy'])
 
     return frozenModel, meltedModel, untrainedModel
 
