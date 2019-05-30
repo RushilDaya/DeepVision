@@ -8,7 +8,7 @@ from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras import backend as K
 from shared.autoencoderHelpers import read_n_images
 from shared.autoencoderArchitectures import getNormal, getDayaNet, getLeCunhaNet 
-from shared.classifierArchitectures import getSimple
+from shared.classifierArchitectures import getSimple, getFullyConnected1
 
 def getUntrained(aeArchitecture, inputShape):
 
@@ -67,6 +67,8 @@ def autoencoderToClassifier(autoencoderModel, classifierName, codeName, outputSh
 
     if classifierName == 'simple':
         classifierOutput = getSimple(encoder, outputShape)
+    if classifierName == 'fullyConnected1':
+        classifierOutput = getFullyConnected1(encoder, outputShape)
     else:
         raise TypeError('classifier Not implemented')
 

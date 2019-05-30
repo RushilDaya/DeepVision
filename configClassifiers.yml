@@ -1,8 +1,15 @@
 config1:
   optimizer: 'adam'
   batchSize: 8
-  epochs: 1
+  epochs: 30
   autoencoderArch: 'normal'
   autoencoderModel: 'twoClassTest'
   classifierModel: 'simple'
   
+config2:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  autoencoderArch: 'normal'
+  autoencoderModel: 'twoClassTest'
+  classifierModel: 'fullyConnected1'

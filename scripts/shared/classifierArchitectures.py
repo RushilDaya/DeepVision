@@ -13,3 +13,15 @@ def getSimple(encoder, outputShape):
     x = Flatten()(encoderOutput)
     outputModel = Dense(outputShape, activation=tf.nn.sigmoid, name='output_layer')(x)
     return outputModel
+
+def getFullyConnected1(encoder, outputShape):
+    # a deep larger fully connected layer than the simple model
+
+    encoderOutput = encoder.layers[-1].output
+    x = Flatten()(encoderOutput)
+    x = Dense(50, activation=tf.nn.relu, name='fc_1')(x)
+    x = Dropout(rate=0.5)(x)
+    x = Dense(20, activation=tf.nn.relu, name='fc_2')(x)
+    x = Dropout(rate=0.5)(x)
+    outputModel = Dense(outputShape, activation=tf.nn.sigmoid, name='output_layer')(x)
+    return outputModel
