@@ -1,0 +1,6 @@
+config00:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 2
+  lossFunction: 'binary_crossentropy'
+  segmentationArch: 'miniU'
