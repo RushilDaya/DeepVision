@@ -25,7 +25,8 @@ BATCH_SIZE = configuration['batchSize']
 EPOCHS = configuration['epochs']
 LOSS_FUNCTION = configuration['lossFunction']
 SEGMENTATION_ARCHITECTURE = configuration['segmentationArch']
+SEGMENTATION_SCHEME = configuration['segmentationScheme']
 
-(model) = sg.buildModel(SEGMENTATION_ARCHITECTURE,OPTIMIZER,datapath=datapath)
-(trainedModel) = sg.trainModel(model,BATCH_SIZE,datapath=datapath)
-sg.saveModel(configName, trainedModel, savepath=savepath)
+(model) = sg.buildModel(SEGMENTATION_ARCHITECTURE,OPTIMIZER,LOSS_FUNCTION,SEGMENTATION_SCHEME,datapath=datapath)
+(trainedModel,history) = sg.trainModel(model,BATCH_SIZE,EPOCHS, SEGMENTATION_SCHEME, datapath=datapath)
+sg.saveModel(configName, trainedModel,history, savepath=savepath)

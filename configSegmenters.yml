@@ -3,4 +3,5 @@ config00:
   batchSize: 8
   epochs: 2
   lossFunction: 'binary_crossentropy'
-  segmentationArch: 'miniU'
+  segmentationArch: 'miniUnet'
+  segmentationScheme: 'foregroundBackground'
