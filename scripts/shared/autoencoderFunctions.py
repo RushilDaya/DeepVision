@@ -32,7 +32,7 @@ def buildModel(networkArch='normal', optimizer='adam', datapath=''):
     else:
         raise TypeError('architecture not implemented')
 
-    autoencoder.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['mean_squared_error'])
+    autoencoder.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['binary_crossentropy'])
     encoder.summary()
     decoder.summary()
     autoencoder.summary()

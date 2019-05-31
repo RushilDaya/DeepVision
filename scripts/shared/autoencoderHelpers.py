@@ -19,7 +19,7 @@ def read_n_images(dataset, start, end, loc):
     assert glob.glob("{}/*.jpg".format(loc)), "Check file extension (should be 'jpg')."
     images_list = list(zip(*dataset[start:end]))[0]
     labels_list = list(zip(*dataset[start:end]))[1]
-    labels_list = np.array(labels_list).nonzero()[-1]  # Convert dummy encoding to categorical (one number per category)
+    #labels_list = np.array(labels_list).nonzero()[-1]  # Convert dummy encoding to categorical (one number per category)
     images = [cv2.imread("{}/{}.jpg".format(loc, image)) for image in images_list]
     return np.array(images), labels_list
 
