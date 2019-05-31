@@ -5,3 +5,19 @@ config00:
   lossFunction: 'binary_crossentropy'
   segmentationArch: 'miniUnet'
   segmentationScheme: 'foregroundBackground'
+
+config1:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  lossFunction: 'binary_crossentropy'
+  segmentationArch: 'miniUnet'
+  segmentationScheme: 'foregroundBackground'
+
+config2:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 30
+  lossFunction: 'binary_crossentropy'
+  segmentationArch: 'midiUnet'
+  segmentationScheme: 'foregroundBackground'

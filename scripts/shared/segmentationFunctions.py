@@ -4,13 +4,15 @@ from random import randint
 import pickle, os
 import tensorflow as tf
 from shared.segmentationHelpers import get_input_shape, get_num_images, generate_image_segmentation_labels
-from shared.segmentationArchitectures import miniUnet
+from shared.segmentationArchitectures import miniUnet, midiUnet
 
 def buildModel(segmentationArchitecture, optimizer,lossFunction,segmentationScheme,datapath=''):
     inputShape = get_input_shape(datapath,segmentationScheme)
     
     if segmentationArchitecture == 'miniUnet':
         model = miniUnet(inputShape)
+    elif segmentationArchitecture == 'midiUnet':
+        model = midiUnet(inputShape)
     else:
         raise TypeError('undefined architecure')
     # need to add the DICE metric
