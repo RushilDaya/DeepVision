@@ -1,0 +1,118 @@
+# running this scripts produces the segmentation data sets.
+import os, sys, pickle
+import numpy as np 
+import matplotlib.pyplot as plt
+from skimage import io
+from skimage.transform import resize
+from  shared.confReader import confReader
+from  shared.utils import printProgressBar, createUpdateDirectories
+
+
+def copyAndResizeImage(originalImagePaths,targetImagePaths,imgSize, progress_title='progress', processFunction=None):
+    """
+        moves images from one location to another with resizing
+        if processFunction is not None then it gets applied to the image before saving
+    """
+    if len(originalImagePaths) != len(targetImagePaths):
+        raise TypeError('invalid input arguments')
+
+    numCopies = len(originalImagePaths)
+
+    for i in range(numCopies):
+        image = io.imread(originalImagePaths[i])
+        resized = (255*resize(image, (imgSize,imgSize,3))).astype('uint8')
+        if not processFunction is None:
+            processed = processFunction(resized)
+        else:
+            processed = resized
+        io.imsave(targetImagePaths[i], processed)
+        printProgressBar(i, numCopies,prefix=progress_title)
+
+def getProcesser(segmentationType):
+    """
+        returns a decorator function based on the segementation type we want
+        the returned function takes in an image and returns the processed image
+    """
+    if segmentationType == 'foregroundBackground':
+        def binaryForegroundBackground(image):
+            (height,width,depth) = image.shape
+            for i in range(height):
+                for j in range(width):
+                    if np.array_equal(image[i,j,:],[0,0,210]): # this comparision is based on a visualisation of the images
+                        image[i,j,:] = [0,0,0]
+                    else:
+                        image[i,j,:] = [255,255,255]
+            return image
+        return binaryForegroundBackground
+
+    else:
+        raise TypeError('segmentation type not defined')
+
+
+rawDataPath = confReader('RAW_DATA_LOCATION')
+if not os.path.isdir(rawDataPath):
+    print('please download raw data and unpack in root folder..')
+    sys.exit()
+
+imageSize=confReader('IMAGE_SIZE')
+segmentationType = confReader('SEGMENTATION_DATA_TYPE')
+if not segmentationType in ['foregroundBackground']:
+    print('invalid segmentation type in configFile')
+    sys.exit()
+
+trainingSplit=confReader('TRAINING_RATIO')
+validationSplit=confReader('VALIDATION_RATIO')
+testSplit=confReader('TEST_RATIO')
+if not testSplit+trainingSplit+validationSplit == 1.0:
+    print('data split doesnt add to 1')
+    sys.exit()
+
+
+storeDir = '../data/segmentation/'+segmentationType+'/'
+createUpdateDirectories(['../data/segmentation/'],reset=False)
+createUpdateDirectories([storeDir],reset=False)
+createUpdateDirectories([storeDir+item+'/' for item in ['training','validation','test']], reset=True)
+createUpdateDirectories([storeDir+item+'/' for item in ['training/images','validation/images','test/images','training/labels','validation/labels','test/labels']], reset=True)
+
+allImageNames  = []
+with open(rawDataPath+'ImageSets/Segmentation/trainval.txt') as file:
+    allImageNames = file.read().splitlines()
+
+
+numImages = len(allImageNames)
+trainingNames = allImageNames[:int(numImages*trainingSplit)]
+validationNames = allImageNames[int(numImages*trainingSplit):int(numImages*(trainingSplit+validationSplit))]
+testNames = allImageNames[int(numImages*(trainingSplit+validationSplit)):]
+
+
+splitLabels = {
+    'training':trainingNames,
+    'test':testNames,
+    'validation':validationNames
+}
+
+with open('../data/segmentation/'+segmentationType+'/labels.pickle', 'wb' ) as f:
+    pickle.dump(splitLabels, f)
+
+
+
+trainingImagePaths = [rawDataPath+'JPEGImages/'+item+'.jpg' for item in trainingNames]
+trainingLabelPaths = [rawDataPath+'SegmentationObject/'+item+'.png' for item in trainingNames]
+trainingImagePathsTarget = [storeDir+'training/images/'+item+'.jpg' for item in trainingNames]
+trainingLabelPathsTarget = [storeDir+'training/labels/'+item+'.jpg' for item in trainingNames]
+copyAndResizeImage(trainingImagePaths,trainingImagePathsTarget,imageSize,processFunction=None)
+copyAndResizeImage(trainingLabelPaths,trainingLabelPathsTarget,imageSize,processFunction=getProcesser(segmentationType))
+
+validationImagePaths = [rawDataPath+'JPEGImages/'+item+'.jpg' for item in validationNames]
+validationLabelPaths = [rawDataPath+'SegmentationObject/'+item+'.png' for item in validationNames]
+validationImagePathsTarget = [storeDir+'validation/images/'+item+'.jpg' for item in validationNames]
+validationLabelPathsTarget = [storeDir+'validation/labels/'+item+'.jpg' for item in validationNames]
+copyAndResizeImage(validationImagePaths,validationImagePathsTarget,imageSize,processFunction=None)
+copyAndResizeImage(validationLabelPaths,validationLabelPathsTarget,imageSize,processFunction=getProcesser(segmentationType))
+
+testImagePaths = [rawDataPath+'JPEGImages/'+item+'.jpg' for item in testNames]
+testLabelPaths = [rawDataPath+'SegmentationObject/'+item+'.png' for item in testNames]
+testImagePathsTarget = [storeDir+'test/images/'+item+'.jpg' for item in testNames]
+testLabelPathsTarget = [storeDir+'test/labels/'+item+'.jpg' for item in testNames]
+copyAndResizeImage(testImagePaths,testImagePathsTarget,imageSize,processFunction=None)
+copyAndResizeImage(testLabelPaths,testLabelPathsTarget,imageSize,processFunction=getProcesser(segmentationType))

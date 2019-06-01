@@ -3,10 +3,12 @@
 #1. data splitting variables
 
 RAW_DATA_LOCATION: '../../DeepVision/VOCdevkit/VOC2009/'
-CLASSES: ['cat','car','boat','bird','dog'] # options: aeroplane, bicycle, bird, boat, bottle, bus,car,cat,chair,cow, diningtable, dog,horse,motorbike,person, pottedplant, sheep, sofa, train,tvmonitor
+CLASSES: ['cat','boat'] # options: aeroplane, bicycle, bird, boat, bottle, bus,car,cat,chair,cow, diningtable, dog,horse,motorbike,person, pottedplant, sheep, sofa, train,tvmonitor
 IMAGE_SIZE: 200
 
 NUM_IMAGES: -1 # an upper bound on how many images to extract in total (-1 indicates no upper bound)
 TRAINING_RATIO: 0.6
 VALIDATION_RATIO: 0.2
 TEST_RATIO: 0.2
+
+SEGMENTATION_DATA_TYPE: 'foregroundBackground' # options: [foregroundBackground, ...]

@@ -6,7 +6,22 @@ import tensorflow as tf
 import numpy as np
 import os
 
-from shared.autoencoderArchitectures import getNormal, getDayaNet, getLeCunhaNet
+
+
+def getCodeLabel(architectureName):
+    '''
+        a helper function which returns the name of the encoded layer (code) of each model architecture
+        :param arcitectureName: string the name of the architecture as defined in the configuration file
+    '''
+    if architectureName =='normal':
+        return 'enc_max_pool3'
+    elif architectureName == 'dayaNet':
+        return 'enc_max_pool3'
+    elif architectureName == 'leCunhaNet':
+        return 'enc_max_pool2'
+    else:
+        raise TypeError('undefined architecture name')
+        
 
 def getNormal(inputShape):
     """
