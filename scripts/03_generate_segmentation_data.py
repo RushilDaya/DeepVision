@@ -7,6 +7,9 @@ from skimage.transform import resize
 from  shared.confReader import confReader
 from  shared.utils import printProgressBar, createUpdateDirectories
 
+import sys
+import yaml
+
 
 def copyAndResizeImage(originalImagePaths,targetImagePaths,imgSize, progress_title='progress', processFunction=None):
     """
@@ -79,16 +82,23 @@ def singleOutClass(allNames, classOfInterest, rawDataPath):
 
 
 
+if len(sys.argv) < 1:
+    print('expected argument: segmentationScheme eg. foregroundBackground )
+    sys.exit()
+
+segmentationType = sys.argv[1]
+if not segmentationType in ['foregroundBackground','personOnly']:
+    print('invalid segmentation type in configFile')
+    sys.exit()
+
+
+
 rawDataPath = confReader('RAW_DATA_LOCATION')
 if not os.path.isdir(rawDataPath):
     print('please download raw data and unpack in root folder..')
     sys.exit()
 
 imageSize=confReader('IMAGE_SIZE')
-segmentationType = confReader('SEGMENTATION_DATA_TYPE')
-if not segmentationType in ['foregroundBackground','personOnly']:
-    print('invalid segmentation type in configFile')
-    sys.exit()
 
 trainingSplit=confReader('TRAINING_RATIO')
 validationSplit=confReader('VALIDATION_RATIO')

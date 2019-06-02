@@ -23,6 +23,8 @@ def trainModel(model, batchSize, epochs, segmentationScheme, datapath=''):
     num_samples_train = get_num_images('training',segmentationScheme,datapath)
     steps_train = ceil(num_samples_train/batchSize)
     num_samples_validation = get_num_images('validation',segmentationScheme,datapath)
+    print('****')
+    print(segmentationScheme)
     steps_validation = ceil(num_samples_validation/batchSize)
 
     early_stop = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
@@ -34,8 +36,13 @@ def trainModel(model, batchSize, epochs, segmentationScheme, datapath=''):
 
     return (model,history)
 
-def saveModel(configName, model, history, savepath=''):
-    saveLoc = savepath+'/'+configName+'/'
+def saveModel(configName, model, history, segmentationScheme, savepath=''):
+
+    savePathPartial = savepath+'/'+segmentationScheme+'/'
+    if not os.path.isdir(savePathPartial):
+        os.mkdir(savePathPartial)
+
+    saveLoc = savePathPartial +configName+'/'
     if not os.path.isdir(saveLoc):
         os.mkdir(saveLoc)
     tf.keras.models.save_model(model, saveLoc+'model', overwrite=True)

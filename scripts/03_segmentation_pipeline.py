@@ -27,6 +27,8 @@ LOSS_FUNCTION = configuration['lossFunction']
 SEGMENTATION_ARCHITECTURE = configuration['segmentationArch']
 SEGMENTATION_SCHEME = configuration['segmentationScheme']
 
+savepath = '../models/segmenters'
+
 (model) = sg.buildModel(SEGMENTATION_ARCHITECTURE,OPTIMIZER,LOSS_FUNCTION,SEGMENTATION_SCHEME,datapath=datapath)
 (trainedModel,history) = sg.trainModel(model,BATCH_SIZE,EPOCHS, SEGMENTATION_SCHEME, datapath=datapath)
-sg.saveModel(configName, trainedModel,history, savepath=savepath)
+sg.saveModel(configName, trainedModel,history, SEGMENTATION_SCHEME, savepath=savepath)
