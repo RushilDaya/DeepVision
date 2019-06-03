@@ -6,6 +6,13 @@ import tensorflow as tf
 from shared.segmentationHelpers import get_input_shape, get_num_images, generate_image_segmentation_labels
 from shared.segmentationArchitectures import miniUnet, midiUnet
 
+def dice_loss(y_true, y_pred):
+  numerator = 2 * tf.reduce_sum(y_true * y_pred)
+  # some implementations don't square y_pred
+  denominator = tf.reduce_sum(y_true + tf.square(y_pred))
+
+  return 1 - numerator / (denominator + tf.keras.backend.epsilon())
+
 def buildModel(segmentationArchitecture, optimizer,lossFunction,segmentationScheme,datapath=''):
     inputShape = get_input_shape(datapath,segmentationScheme)
     
@@ -16,6 +23,11 @@ def buildModel(segmentationArchitecture, optimizer,lossFunction,segmentationSche
     else:
         raise TypeError('undefined architecure')
     # need to add the DICE metric
+
+    if lossFunction == 'dice':
+        print('using DICE loss')
+        lossFunction = dice_loss
+
     model.compile(optimizer=optimizer,loss=lossFunction)
     return (model)
 

@@ -45,3 +45,11 @@ config5:
   lossFunction: 'binary_crossentropy'
   segmentationArch: 'midiUnet'
   segmentationScheme: 'personOnly'
+
+config6:
+  optimizer: 'adam'
+  batchSize: 8
+  epochs: 10
+  lossFunction: 'dice'
+  segmentationArch: 'midiUnet'
+  segmentationScheme: 'foregroundBackground'
